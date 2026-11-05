@@ -1,0 +1,52 @@
+/* Lantern Harbor's green felt and warm-paper visual theme. */
+:root{--home-cream:#f7edd9;--home-gold:#d2ad70}
+.brand-wordmark{color:#174b3c}.brand-wordmark text{fill:currentColor}.harbor-board .board-wordmark{color:#f8f0df}
+.game-header .brand-wordmark,.lobby-header .brand-wordmark{width:220px;max-width:100%;height:auto}
+.game-table .board-wrap,.board-wrap{border-radius:12px;padding:5px;background:#bca178;border:1px solid #8d795a;box-shadow:0 5px 0 #806c50,0 15px 35px #102a3045}
+.board-svg.harbor-board{border-radius:12px;font-family:system-ui,-apple-system,sans-serif}
+.harbor-board .harbor-tile{transition:fill .2s,filter .2s}.harbor-board .board-space:hover .harbor-tile,.harbor-board .board-space:focus-visible .harbor-tile{fill:var(--tile-hover,#fffaf0);filter:brightness(1.07)}
+.harbor-board .board-space:focus-visible{outline:none}.harbor-board .board-space:focus-visible .space-selection{opacity:1}
+.harbor-board .board-space.owner-lit .harbor-tile{stroke:var(--owner-color);stroke-width:2}
+.harbor-board .piece-sprite{color:#42654e;stroke:none}.harbor-board .piece-jail-gate{display:none!important}.harbor-board .piece-in-jail .piece-sprite{opacity:.65}
+.harbor-board .board-card-deck{cursor:pointer}.harbor-board .board-card-deck:hover rect{fill:#3c6c50}
+.board .dice-tray{left:50%;top:65%;transform:translate(-50%,-50%) rotate(-3deg)}
+.board .board-notice{top:81%;max-width:55%;border-radius:16px;color:#273f47;background:#f7eddbf0;border-color:#d2bd96;font-size:clamp(8px,1.6cqw,13px)}
+.property-card{background:#faf5e9;border:0;border-radius:8px;padding:5%;box-shadow:1px 4px 9px #20383b24;color:#294048;font-family:system-ui,-apple-system,sans-serif}
+.deed-print.harbor-deed{border:0;border-top:4px solid var(--district);padding:5% 2%;gap:2%;text-align:left}
+.harbor-deed-top{display:flex;justify-content:space-between;color:#78847c;font-size:4.3cqw;letter-spacing:.07em;padding-bottom:3%;border-bottom:1px solid #d3cebd}
+.harbor-deed .deed-color{flex:0 0 23%;padding:5% 0;background:none!important;border:0;color:#294048;justify-content:center;gap:7%}
+.harbor-deed .deed-color>span{font-size:4cqw;letter-spacing:.1em;color:#7a857c}.harbor-deed .deed-color>strong{font:600 9cqw/1.05 Georgia,serif;text-transform:none;color:#174b3c}
+.harbor-deed .deed-rents{font-size:5cqw;line-height:1.3;gap:2cqw 3cqw;margin:0}.harbor-deed .deed-rents span:nth-child(even){font-variant-numeric:tabular-nums;font-weight:650}
+.harbor-deed .deed-mortgage{font-size:5cqw;margin-top:3%;padding-top:5%;border-top:1px solid #d7d2c1}.harbor-deed .deed-build-price{font-size:4.8cqw;margin-top:0}
+.harbor-deed .deed-fine{font-size:4.4cqw;line-height:1.35;margin:4% 0 0;color:#64736e}.harbor-deed .deed-imprint{margin-top:auto;font-size:4cqw;letter-spacing:.13em;color:#829087;padding-top:4%}
+.property-card.rail .harbor-deed .deed-rents{font-size:5.5cqw;gap:4cqw 2cqw}.property-card.rail .harbor-deed .deed-mortgage{margin-top:8%}
+.home-table{background:var(--table-felt-surface);border-color:#463927}.home-table-stitch{border-color:#ddcba133}.home-invitation{border-radius:4px}
+.home-board-depth,.home-board-face{border-radius:12px}.lobby-mini-board{border-radius:12px;overflow:hidden}.home-board-face{background:none}.home-board-face .harbor-board{border-radius:12px}
+.draw-card-back{background:#28533f!important;color:#eddfc5!important}.card-dialog.chance,.card-dialog.chest{border-radius:16px;background:#faf4e7!important;border-color:#c6b690}
+.card-dialog .reading-question{color:#6e8b91;font-family:Georgia,serif}.mortgage-stamp{border-color:#a9685e;color:#a9685e}
+@media(max-width:600px){.game-header .brand-wordmark,.lobby-header .brand-wordmark{width:170px}.game-table .board-wrap,.board-wrap{padding:3px}.harbor-deed .deed-color>strong{font-size:8.5cqw}}
+@media(prefers-reduced-motion:reduce){.harbor-tile{transition:none!important}}
+.game-table .brand-wordmark{color:#f7edda}
+.game-table .board,.board{background:transparent;border:0;border-radius:12px;box-shadow:none}
+.game-table .board-wrap{border-radius:12px}
+/* Fixed typography rhythm also applies to enlarged and miniature property records. */
+.harbor-deed{gap:1.3cqw!important;overflow:hidden}
+.harbor-deed>*{flex-shrink:0}
+.harbor-deed .harbor-deed-top{font-size:3.8cqw;padding-bottom:2cqw}
+.harbor-deed .deed-color{flex:0 0 auto;min-height:21cqw;padding:3cqw 0;gap:2cqw}
+.harbor-deed .deed-color>span{font-size:3.5cqw}
+.harbor-deed .deed-color>strong{font-size:8.2cqw;line-height:1.08}
+.harbor-deed .deed-rents,.property-card.rail .harbor-deed .deed-rents{font-size:4.5cqw;line-height:1.22;gap:1.1cqw 2cqw;flex:none}
+.harbor-deed .deed-mortgage,.property-card.rail .harbor-deed .deed-mortgage{font-size:4.4cqw;margin:1cqw 0 0;padding-top:2cqw}
+.harbor-deed .deed-build-price{font-size:4.3cqw;line-height:1.2}
+.harbor-deed .deed-fine{font-size:3.6cqw;line-height:1.3;margin:1cqw 0 0;padding-top:0}
+.harbor-deed .deed-imprint{font-size:3.3cqw;padding-top:1.5cqw}
+.connections-page{max-width:1100px;margin:0 auto;padding:16px 16px 48px}.connections-page>h1{font:normal clamp(35px,4vw,56px)/1.1 Georgia,serif;margin:14px 0}.connections-page>.eyebrow{display:block;margin-top:28px}.connections-page>p{max-width:780px;line-height:1.7;color:#66776e}
+.connections-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:32px;margin-top:28px;align-items:start}.connection-providers{display:grid;gap:7px}.connection-providers button{padding:13px 15px;text-align:left;background:#eeeadd;border:1px solid #d8d1bf;border-radius:8px}.connection-providers b,.connection-providers small{display:block}.connection-providers b{font-size:13px}.connection-providers small{font-size:10px;color:#788579;margin-top:5px}.connection-providers button[aria-pressed=true]{background:#28533f;color:#fff3dc;border-color:#28533f}.connection-providers button[aria-pressed=true] small{color:#d9dbc5}
+.connection-detail{background:#faf5e9;padding:28px;border:1px solid #d8cfb8;border-radius:12px;min-width:0}.connection-detail h2{font:normal 28px Georgia,serif;margin:0 0 14px}.connection-detail>p,.connection-instructions p{font-size:13px;line-height:1.65}.connection-detail label{display:grid;gap:8px;font-size:12px;font-weight:650;margin:18px 0}.connection-detail input,.connection-detail select,.connection-detail textarea{width:100%;font-size:13px;min-width:0;padding:11px;background:#fffdf6;border:1px solid #bdc9bf;border-radius:6px}.connection-detail a{font-size:12px;color:#3d6a75}.connection-hint{font-size:11px!important;line-height:1.6;color:#738275}.connection-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.connection-status{min-height:26px;color:#657b73}.connection-status.ready{color:#32654e}.connection-status.failed{color:#a94c3d}.connection-destination{font-size:11px!important;overflow-wrap:anywhere}.connection-advanced{margin:24px 0;padding:14px;background:#eeeadd;border-radius:8px}.connection-advanced summary{font-size:12px;cursor:pointer}.connection-privacy,.connection-host-note{background:#e8ece0;padding:16px;border-radius:8px;margin:22px 0;font-size:11px;line-height:1.65}.connection-privacy p{margin-bottom:0}.connection-instructions code{display:block;background:#e8e8dc;padding:15px;margin:18px 0;font-size:15px}.connection-model-preview select{font-weight:400}
+@media(max-width:700px){.connections-layout{grid-template-columns:1fr;gap:20px}.connection-providers{grid-template-columns:repeat(2,minmax(0,1fr))}.connection-providers button{padding:11px}.connection-detail{padding:20px}.connections-page{padding-inline:0}}
+.game-table.in-lobby .lobby-header .brand-wordmark{color:#174b3c}
+.piece-group-label{grid-column:1/-1;display:block;text-align:left;font-size:11px;font-weight:750;letter-spacing:.06em;margin:15px 0 5px;color:#4c624e}
+.game-table .board-wrap,.board-wrap{background:repeating-linear-gradient(91deg,#ad8653 0,#bb965f 1px,#c4a16b 3px,#b3915c 4px,#b89560 8px)}
+
+.game-table .matchup-header .brand-wordmark{color:#174b3c}

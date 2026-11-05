@@ -1,0 +1,95 @@
+{
+  "source": "Lobe Icons",
+  "repository": "https://github.com/lobehub/lobe-icons",
+  "commit": "ea434b96e75813517b377825e01c0df61dee8836",
+  "license": "MIT",
+  "icons": [
+    {
+      "slug": "openai",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/openai.svg",
+      "sha256": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186"
+    },
+    {
+      "slug": "codex",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/codex.svg",
+      "sha256": "d08b4e824cd6727e89617f59e4737273ff53e44c1da849d016dd64dfd08b33e1"
+    },
+    {
+      "slug": "claude",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/claude.svg",
+      "sha256": "365a70a7eb3956d9b9a96086058ebe04e1dbd8e291a756ad964e8a283fbd6d38"
+    },
+    {
+      "slug": "ollama",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/ollama.svg",
+      "sha256": "3a268218fb2e6e81fa31df70f70b51331625047794db81db21d35359428fae7a"
+    },
+    {
+      "slug": "openrouter",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/openrouter.svg",
+      "sha256": "ae671cc83de9bd45db97a47ed5e38a4e1bd9f93a12be495ba4b4f8b284026bca"
+    },
+    {
+      "slug": "gemini",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/gemini.svg",
+      "sha256": "87d5b3c4be75a66f54c1936482a263df68185545b741129badd1b7c2449c18d3"
+    },
+    {
+      "slug": "gemma",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/gemma.svg",
+      "sha256": "8f9b74f6bbbf17203da8d81c3a4bb8750dbf13afe3ab4c1d482e84be62cd03a6"
+    },
+    {
+      "slug": "deepseek",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/deepseek.svg",
+      "sha256": "8f9443e351b6dacce71871790201b799d92e8bf96a45ef79aeb5e9bf4db423e2"
+    },
+    {
+      "slug": "qwen",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/qwen.svg",
+      "sha256": "b2c16efc3bd32b88a941842d41222e1e1e0e40441222218b725afc0aef6d9a36"
+    },
+    {
+      "slug": "kimi",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/kimi.svg",
+      "sha256": "ed08131b46acf70e6e2144eceb775e74098b58ea65fa21eaee04be7b05cfe63b"
+    },
+    {
+      "slug": "mistral",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/mistral.svg",
+      "sha256": "a06cfa54e7deff7f7544175b006b7f8a03fbc5624c44f7d553a44d07ea96e629"
+    },
+    {
+      "slug": "meta",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/meta.svg",
+      "sha256": "805ef9a35305393eb5a89be46b0708c9b119b3308ca44aaedd1457ff04857060"
+    },
+    {
+      "slug": "grok",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/grok.svg",
+      "sha256": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95"
+    },
+    {
+      "slug": "zai",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/zai.svg",
+      "sha256": "e748cb5108ce37b116d7a5ba97d37e0ae97eadf6849b0de11afb248e244a01e1"
+    },
+    {
+      "slug": "groq",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/groq.svg",
+      "sha256": "078d5cf6e7a54905040c15ddacf5ea33c13042fe7739e820cedc2096e4406651"
+    },
+    {
+      "slug": "lmstudio",
+      "url": "https://github.com/lobehub/lobe-icons/blob/ea434b96e75813517b377825e01c0df61dee8836/packages/static-svg/icons/lmstudio.svg",
+      "sha256": "4a575e8382b52ce742ac5d21d361a7d2a08cea7c12390ee1bbb755ef7d3cc25b"
+    },
+    {
+      "slug": "xiaomi",
+      "source": "Simple Icons",
+      "license": "CC0-1.0",
+      "url": "https://github.com/simple-icons/simple-icons/blob/4bfa9da744e2c06928047314ce30dc5c8d1ad759/icons/xiaomi.svg",
+      "sha256": "8866d12a70d85ab43acd3b9c80f1b37792d91160d8273efffdf817af5fd608cb"
+    }
+  ]
+}

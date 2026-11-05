@@ -1,0 +1,20 @@
+{
+  "name": "rent-and-reason",
+  "version": "0.3.0",
+  "private": true,
+  "description": "An original property-trading game in Lantern Harbor with local bots and optional AI opponents",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node launch.cjs",
+    "ai": "node launch.cjs",
+    "build": "node build.mjs",
+    "test": "node --test tests/*.test.cjs",
+    "release:check": "node scripts/check-release.cjs",
+    "ai:key": "node setup-openrouter.cjs",
+    "ai:key:check": "node setup-openrouter.cjs --check",
+    "ai:key:remove": "node setup-openrouter.cjs --remove"
+  }
+}

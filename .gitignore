@@ -1,0 +1,12 @@
+# Every installation owns its saves, conversations, and credentials.
+.rent-reason-data/
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+.DS_Store
+node_modules/
+coverage/
+release/
+*.zip
