@@ -3,11 +3,15 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const {OllamaProvider}=require('../ai/providers.cjs'),{AgentSession}=require('../ai/session.cjs'),{Table}=require('../ai/table.cjs'),{Game}=require('../engine.js'),S=require('../ai/strategy.cjs');
 const answer={type:'act',actionId:'roll',tool:'',actionIds:[],memory:'Preserve cash.',rationale:'Roll.',say:'',proposal:null};
 function stream(frames,signal,{hang=false,split=false}={}){
+ let keepAlive;
  return new Response(new ReadableStream({start(c){
-  const abort=()=>c.error(signal.reason);signal.addEventListener('abort',abort,{once:true});
+  // A real pending fetch has a socket. Keep the hanging mock alive too:
+  // AbortSignal.timeout uses an unreferenced timer on supported Node versions.
+  if(hang)keepAlive=setInterval(()=>{},1000);
+  const abort=()=>{clearInterval(keepAlive);c.error(signal.reason);};signal.addEventListener('abort',abort,{once:true});
   for(const f of frames){const bytes=new TextEncoder().encode(JSON.stringify(f)+'\n');if(split)for(const b of bytes)c.enqueue(Uint8Array.of(b));else c.enqueue(bytes);}
   if(!hang){signal.removeEventListener('abort',abort);c.close();}
- }}));
+ },cancel(){clearInterval(keepAlive);}}));
 }
 const request={model:'qwen3.5:9b',messages:[{role:'system',content:'Stable rules'}],schema:{type:'object'},effort:'medium'};
 test('Ollama streams progress while keeping private reasoning out of status and the final decision',async()=>{
