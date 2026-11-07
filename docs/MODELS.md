@@ -47,6 +47,19 @@ commands, then **Check sign-in & load models** verifies the connection. Login
 itself stays in the official tool. The game neither installs CLIs nor asks for
 your password. These adapters do not fall back to direct API billing.
 
+Claude Code keeps a live CLI process for each seat's strategic and conversational
+session. Later turns reuse that process and its context. The host passes
+`--no-session-persistence` so game transcripts are not saved for ChatGPT/Codex
+desktop to import as chats. Subscription login stays in the official CLI's
+normal credential store; no credentials are moved or copied. Use a current CLI
+supporting `--safe-mode`, streaming input, and `--no-session-persistence`.
+
+Context compaction, cancellation, and host shutdown close the relevant processes.
+After a host restart, sessions rebuild from the saved game and strategy memory.
+If a CLI process exits unexpectedly, the host requires a context rebuild before
+sending further state changes. Restart the game host after updating to activate
+this behavior. Previously saved transcripts and already imported chats remain.
+
 ## Advanced settings
 
 - **Response format:** Strict JSON schema for compatible models; JSON object for
