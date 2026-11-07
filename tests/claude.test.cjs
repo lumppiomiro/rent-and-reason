@@ -9,24 +9,28 @@ const {Game}=require('../engine.js'),S=require('../ai/strategy.cjs'),Usage=requi
 const {createHost}=require('../server.cjs');
 const decision={type:'act',actionId:'roll',tool:'',actionIds:[],proposal:null,memory:'Keep cash for three workshops.',rationale:'Roll while preserving reserve.',say:''};
 const request={model:'sonnet',sessionKey:'seat-a',system:'Stable board and strategy',text:'snapshot',schema:{type:'object'},effort:'medium'};
-function fixture({auth='claude.ai',version='2.1.300 (Claude Code)',help='--safe-mode --tools --strict-mcp-config --json-schema --effort --setting-sources',run}={}){
- const calls=[],commands=[],children=[];
+function fixture({auth='claude.ai',version='2.1.300 (Claude Code)',help='--safe-mode --tools --strict-mcp-config --json-schema --effort --setting-sources --input-format --no-session-persistence',run,controlRun}={}){
+ const calls=[],commands=[],children=[],controls=[];
  const provider=new ClaudeProvider({execFileImpl:(bin,args,opts,cb)=>{commands.push({args,opts});queueMicrotask(()=>cb(null,args[0]==='--version'?version:args[0]==='--help'?help:JSON.stringify({loggedIn:auth!=='none',authMethod:auth,subscriptionType:'max',email:'private@example.test'})));},spawnImpl:(bin,args,opts)=>{
-  const c=new EventEmitter();c.stdout=new PassThrough();c.stderr=new PassThrough();c.send=m=>c.stdout.write(JSON.stringify(m)+'\n');c.end=code=>{c.stdout.end();c.stderr.end();setImmediate(()=>c.emit('close',code??0));};c.kill=signal=>{c.killed=signal;queueMicrotask(()=>c.end(143));};
-  let input='';c.stdin=new Writable({write(b,enc,done){input+=b;done();},final(done){calls.push({args,opts,input,c});done();queueMicrotask(()=>{
-   if(run){run(c,calls.length);return;}
+  const c=new EventEmitter();c.stdout=new PassThrough();c.stderr=new PassThrough();c.send=m=>c.stdout.write(JSON.stringify(m)+'\n');c.end=code=>{if(c.ended)return;c.ended=true;c.stdout.end();c.stderr.end();setImmediate(()=>c.emit('close',code??0));};c.kill=signal=>{c.killed=signal;queueMicrotask(()=>c.end(143));};
+  let input='';c.stdin=new Writable({write(b,enc,done){input+=b;let i;while((i=input.indexOf('\n'))!==-1){const message=JSON.parse(input.slice(0,i));input=input.slice(i+1);queueMicrotask(()=>{
+   if(message.type==='control_request'){controls.push({message,c});if(controlRun){controlRun(c,message);return;}c.send({type:'control_response',response:{subtype:'success',request_id:message.request_id,response:{}}});return;}
+   assert.equal(message.type,'user');assert.equal(message.parent_tool_use_id,null);assert.equal(message.session_id,args[args.indexOf('--session-id')+1]);
+   calls.push({args,opts,input:message.message.content,c});if(run){run(c,calls.length);return;}
    c.send({type:'system',subtype:'init',tools:[],mcp_servers:[]});
-   c.send({type:'result',subtype:'success',structured_output:decision,modelUsage:{'claude-sonnet':{inputTokens:calls.length*100,outputTokens:calls.length*30,cacheReadInputTokens:calls.length*70,cacheCreationInputTokens:calls.length*20}}});c.end();
-  });}});children.push(c);return c;
- }});return{provider,calls,commands,children};
+   c.send({type:'result',subtype:'success',structured_output:decision,modelUsage:{'claude-sonnet':{inputTokens:calls.length*100,outputTokens:calls.length*30,cacheReadInputTokens:calls.length*70,cacheCreationInputTokens:calls.length*20}}});
+  });}done();}});children.push(c);return c;
+ }});return{provider,calls,commands,children,controls};
 }
-test('Claude uses subscription auth, separate resumable seat sessions, constrained output and no native tools',async t=>{
- const {provider:p,calls,commands}=fixture();t.after(()=>p.close());
+test('Claude reuses live seat sessions without importable transcripts, subscription changes or native tools',async t=>{
+ const {provider:p,calls,commands,children,controls}=fixture();t.after(()=>p.close());
  assert.deepEqual((await p.list()).map(m=>m.id),['sonnet','opus','haiku']);
  const first=await p.complete(request),next=await p.complete({...request,text:'patch'});await p.complete({...request,sessionKey:'seat-b'});
  const at=(call,flag)=>call.args[call.args.indexOf(flag)+1];
  assert.equal(at(calls[0],'--tools'),'');assert.equal(at(calls[0],'--permission-mode'),'dontAsk');assert.ok(calls[0].args.includes('--safe-mode'));assert.ok(!calls[0].args.includes('--bare'));assert.ok(!calls[0].args.includes('--dangerously-skip-permissions'));assert.equal(at(calls[0],'--strict-mcp-config'),'--mcp-config');assert.deepEqual(JSON.parse(at(calls[0],'--mcp-config')),{mcpServers:{}});
- assert.equal(at(calls[1],'--resume'),at(calls[0],'--session-id'));assert.notEqual(at(calls[2],'--session-id'),at(calls[0],'--session-id'));assert.equal(calls[0].input,'snapshot');assert.equal(calls[1].input,'patch');assert.equal(calls[0].opts.cwd,calls[1].opts.cwd);assert.notEqual(calls[0].opts.cwd,calls[2].opts.cwd);
+ assert.equal(children.length,2);assert.equal(calls[0].c,calls[1].c);assert.equal(calls[0].c.stdin.writableEnded,false);assert.notEqual(calls[2].c,calls[0].c);assert.equal(controls.length,2);assert.ok(controls.every(c=>c.message.request.subtype==='initialize'));
+ for(const c of calls){assert.equal(at(c,'--input-format'),'stream-json');assert.ok(c.args.includes('--no-session-persistence'));assert.ok(!c.args.includes('--resume'));assert.equal(c.opts.env.CLAUDE_CONFIG_DIR,undefined);}
+ assert.notEqual(at(calls[2],'--session-id'),at(calls[0],'--session-id'));assert.equal(calls[0].input,'snapshot');assert.equal(calls[1].input,'patch');assert.equal(calls[0].opts.cwd,calls[1].opts.cwd);assert.notEqual(calls[0].opts.cwd,calls[2].opts.cwd);
  assert.deepEqual(JSON.parse(first.text),decision);assert.equal(first.usage.input,190);assert.equal(first.usage.output,30);assert.equal(next.usage.input,190);assert.equal(next.usage.cached,70);assert.equal(next.usage.cacheWrite,20);assert.ok(commands.filter(c=>c.args[0]==='auth').length>=4);assert.deepEqual(p.account,{type:'claude.ai',plan:'max'});
 });
 test('Claude strips API credentials, remote backends and inherited agent configuration',async t=>{
@@ -42,7 +46,23 @@ test('Claude checks safe CLI features and cumulative-usage-compatible versions',
  const p=new ClaudeProvider({execFileImpl:(bin,args,opts,cb)=>cb(Object.assign(Error('missing'),{code:'ENOENT'}))});await assert.rejects(p.list(),/not installed/);p.close();
 });
 test('Claude forget / compact resets create fresh sessions instead of resuming stale deltas',async t=>{
- const {provider:p,calls}=fixture();t.after(()=>p.close());await p.complete(request);const dir=calls[0].opts.cwd;p.forget('seat-a');assert.equal(fs.existsSync(dir),false);await p.complete({...request,text:'new snapshot'});assert.ok(!calls[1].args.includes('--resume'));assert.notEqual(calls[1].opts.cwd,dir);
+ const {provider:p,calls}=fixture();t.after(()=>p.close());await p.complete(request);const dir=calls[0].opts.cwd;p.forget('seat-a');assert.equal(fs.existsSync(dir),false);assert.equal(calls[0].c.killed,'SIGTERM');await p.complete({...request,text:'new snapshot'});assert.ok(!calls[1].args.includes('--resume'));assert.notEqual(calls[1].opts.cwd,dir);
+});
+test('Claude updates retry effort in memory before the next prompt without losing context',async t=>{
+ const {provider:p,calls,controls,children}=fixture();t.after(()=>p.close());await p.complete(request);await p.complete({...request,effort:'low',text:'patch at low effort'});await p.complete({...request,text:'patch at normal effort'});
+ assert.equal(children.length,1);assert.deepEqual(controls.map(c=>c.message.request),[{subtype:'initialize',hooks:{}},{subtype:'apply_flag_settings',settings:{effortLevel:'low'}},{subtype:'apply_flag_settings',settings:{effortLevel:'medium'}}]);assert.equal(calls[2].input,'patch at normal effort');assert.equal(p.sessions.get('seat-a').effort,'medium');
+});
+test('Claude does not send a game prompt if the streaming handshake fails',async t=>{
+ const {provider:p,calls,children}=fixture({controlRun:(c,m)=>c.send({type:'control_response',response:{subtype:'error',request_id:m.request_id,error:'unsupported'}})});t.after(()=>p.close());
+ await assert.rejects(p.complete(request),e=>{assert.equal(e.usage.requests,0);return /in-memory session/.test(e.message);});assert.equal(calls.length,0);assert.equal(children[0].killed,'SIGTERM');assert.equal(p.sessions.size,0);
+});
+test('Claude does not cold-start an orphaned delta when an idle process exits',async t=>{
+ const {provider:p,calls,children}=fixture();t.after(()=>p.close());await p.complete(request);children[0].end(0);await new Promise(setImmediate);
+ await assert.rejects(p.complete({...request,text:'delta without snapshot'}),/session stopped/);assert.equal(calls.length,1);assert.equal(p.sessions.size,0);await p.complete({...request,text:'fresh snapshot',reset:true});assert.equal(children.length,2);assert.equal(calls[1].input,'fresh snapshot');
+});
+test('Claude close cancels an in-flight turn and releases idle sessions and temporary directories',async t=>{
+ let emitted;const ready=new Promise(r=>emitted=r);const {provider:p,calls,children}=fixture({run:(c,n)=>{if(n===1){c.send({type:'result',subtype:'success',structured_output:decision});}else emitted();}});t.after(()=>p.close());
+ await p.complete(request);const pending=p.complete({...request,sessionKey:'seat-b'});await ready;const dirs=calls.map(c=>c.opts.cwd);p.close();await assert.rejects(pending,/cancelled/);assert.ok(children.every(c=>c.killed==='SIGTERM'));assert.ok(dirs.every(dir=>!fs.existsSync(dir)));assert.equal(p.active.size,0);assert.equal(p.sessions.size,0);
 });
 test('Claude native-tool exposure or invocation fails closed before any game action',async()=>{
  for(const message of [{type:'system',subtype:'init',tools:['Bash'],mcp_servers:[]},{type:'assistant',message:{content:[{type:'tool_use',name:'Read'}]}}]){
